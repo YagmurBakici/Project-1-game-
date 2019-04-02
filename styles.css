@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: monospace;
+  text-align: center;
+  font-size: 40px;
+}
+
+body {
+  font-family: monospace;
+  text-align: center;
+}
