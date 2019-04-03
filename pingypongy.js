@@ -67,20 +67,20 @@ function keyDownHandler(e) {
   } else if (e.key === "ArrowDown") {
     player2.y += 30;
   }
-  //ctx.clearRect(0, 0, 800, 600);
-  //ball.draw();
-
-  //player1.draw();
-  //player2.draw();
 }
 
 ///////draw functions
 
+var isActive = true;
 function draw() {
   ctx.clearRect(0, 0, 800, 600);
-  ball.draw();
+
   player1.draw();
   player2.draw();
+
+  if (isActive) {
+    ball.draw();
+  }
 
   //SHowing the Score
   ctx.fillText(
@@ -92,78 +92,68 @@ function draw() {
     20
   );
   ctx.font = "20px Monospace";
-
-  //MOving the ball
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  if (ball.y + ball.r > canvas.height || ball.y < 0) {
-    ball.vx *= -1;
-  }
+  //???????????
+  // if (ball.y + ball.r > canvas.height || ball.y < 0) {
+  //   ball.vx *= -1;
+  // }
 
   if (ball.x - ball.r < player1.x + player1.w || ball.x + ball.r > player2.x) {
-    console.log("hit??");
+  }
+
+  // ------------------- PLAYER ONE -------------------
+  //when player1 hits ball
+  // if (ball.x - ball.r < player1.x + player1.w) {
+  // }
+  //horizantally hits
+
+  if (ball.y + ball.r > player1.y && ball.y < player1.y + player1.h) {
+    console.log(score1);
+    score1++;
   }
   // player1--bouncing the ball on x axes
   if (ball.x - ball.r < player1.y + player1.w) {
+    console.log("whar does this do?");
   }
 
-  //   //BOUNCING THIRD TRYYYYYYYYYYYYY !!!!
-  //   function bounce() {
-  //     return (
-  //       player1.x < player2 + player2.w &&
-  //       player1.y + player2.h &&
-  //       player2.x < player1.x + player1.w &&
-  //       player2 < player1 + player2.h
-  //     );
-  //   }
-  // var paddle=ball.dx<0 ? player1;
-  // if (bounce(paddle.x, paddle.y, paddle.w, paddle.h,ball.x,ball.y,ball.dx,ball.vx))
-  //ERASE ABOVE!!!!!!!CAUSE ITS NOT WORKING
+  /// ------------ PLAYER TWO -------------
+  //when palyer2 hits ball
+  // if (ball.x + ball.r > player2.x) {
+  // }
 
-  // player1--bouncing the ball on y axes
-
-  if (ball.y + ball.r > player1.y && ball.y < player1.y + player1.h) {
-    score1++;
-    // } else {
-    //   //console.log("out of bounds");
-    //   clearInterval();
+  if (ball.y + ball.r > player2.y && ball.y < player2.y + player2.h) {
+    score2++;
   }
+  //  ball.vx *= -1;
 
   // player2--bouncing the ball on x axes
   if (ball.x + ball.r > player2.x) {
+    console.log("whar does this do?");
+  }
+  // --------------- BOUNCING OFF EDGES ----------
+  //when it hits the left and right
+  if (
+    ball.x + ball.dx > canvas.width - ball.ballRadius ||
+    ball.x + ball.dx < ball.ballRadius
+  ) {
+    console.log("wwwww");
+
+    //return;
+    ball.dx = -ball.dx;
+    isActive = false;
   }
 
-  // player2--bouncing the ball on y axes
-  if (ball.y + ball.r > player2.y && ball.y < player2.y + player2.h) {
-    score2++;
-    // } else {
-    //   clearInterval(init);
-    //   // console.log("out of bounds");
-    // }
-    ball.vx *= -1;
-    //when it hits the left and right
-    if (
-      ball.x + ball.dx > canvas.width - ball.ballRadius ||
-      ball.x + ball.dx < ball.ballRadius
-    ) {
-      score1++, (ball.dx = -ball.dx);
-
-      return;
-
-      console.log("hit on side");
-    }
-
-    ///when it hits the bottom and top
-    if (
-      ball.y + ball.dy > canvas.height - ball.ballRadius ||
-      ball.y + ball.dy < ball.ballRadius
-    ) {
-      console.log("hit on top and bottom");
-      ball.dy = -ball.dy;
-    }
+  ///when it hits the bottom and top
+  else if (
+    ball.y + ball.dy > canvas.height - ball.ballRadius ||
+    ball.y + ball.dy < ball.ballRadius
+  ) {
+    ball.dy = -ball.dy;
   }
 }
+
 document.onkeydown = keyDownHandler; //action when the key is pressed
 
 setInterval(draw, 10);
