@@ -4,6 +4,7 @@ canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
 var ctx = canvas.getContext("2d");
+startBtn = {};
 
 function Ball() {
   this.color = "orange";
@@ -52,18 +53,18 @@ var player2 = new Paddle("greenyellow", 750, canvas.height / 2, score2);
 player2.draw();
 
 function keyDownHandler(e) {
-  // console.log(e.key);
+  //console.log(e);
   //ctx.clearRect(this.x, this.y, this.w, this.h);
   if (e.key === "s") {
     // console.log("uppppp");
     // console.log(player1.y);
-    player1.y -= 10;
+    player1.y -= 30; // speed of the paddle
   } else if (e.key === "z") {
-    player1.y += 10;
+    player1.y += 30;
   } else if (e.key === "ArrowUp") {
-    player2.y -= 10;
+    player2.y -= 30;
   } else if (e.key === "ArrowDown") {
-    player2.y += 10;
+    player2.y += 30;
   }
   //ctx.clearRect(0, 0, 800, 600);
   //ball.draw();
@@ -76,11 +77,17 @@ function keyDownHandler(e) {
 
 function draw() {
   ctx.clearRect(0, 0, 800, 600);
-
   ball.draw();
   player1.draw();
   player2.draw();
-  ctx.fillText("score : " + score1, "score : " + score2, canvas.width / 2, 10);
+  ctx.fillText(
+    " P1: " +
+      score1 +
+      "                                                    P2: " +
+      score2,
+    10,
+    20
+  );
   ctx.font = "20px Monospace";
   ball.x += ball.dx;
   ball.y += ball.dy;
@@ -90,34 +97,52 @@ function draw() {
   }
 
   if (ball.x - ball.r < player1.x + player1.w || ball.x + ball.r > player2.x) {
+    console.log("hit??");
   }
-  //when player1 hits ball
-  if (ball.x - ball.r < player1.x + player1.w) {
+  // player1--bouncing the ball on x axes
+  if (ball.x - ball.r < player1.y + player1.w) {
   }
-  //horizantally hits
+ // player1--bouncing the ball on y axes
 
   if (ball.y + ball.r > player1.y && ball.y < player1.y + player1.h) {
     score1++;
-  } else clearInterval(init);
+  // } else {
+  //   //console.log("out of bounds");
+  //   clearInterval();
+  // }
 
-  //when palyer2 hits ball
+ // player2--bouncing the ball on x axes
   if (ball.x + ball.r > player2.x) {
   }
+
+   // player2--bouncing the ball on y axes
   if (ball.y + ball.r > player2.y && ball.y < player2.y + player2.h) {
     score2++;
-  } else clearInterval(init);
+  // } else {
+  //   clearInterval(init);
+  //   // console.log("out of bounds");
+  // }
   ball.vx *= -1;
+  //when it hits the left and right
+  if (ball.x + ball.dx > canvas.width - ball.ballRadius);
+  else if (ball.x + ball.dx < ball.ballRadius) {
+    score1++;
+   
+    return;
 
-  if (
-    ball.x + ball.dx > canvas.width - ball.ballRadius ||
-    ball.x + ball.dx < ball.ballRadius
-  ) {
     ball.dx = -ball.dx;
+   
+
+    
+    console.log("hit on side");
   }
+
+  ///when it hits the bottom and top
   if (
     ball.y + ball.dy > canvas.height - ball.ballRadius ||
     ball.y + ball.dy < ball.ballRadius
   ) {
+    console.log("hit on top and bottom");
     ball.dy = -ball.dy;
   }
 }
