@@ -5,6 +5,7 @@ canvas.height = canvas.scrollHeight;
 
 var ctx = canvas.getContext("2d");
 startBtn = {};
+var isActive = true;
 
 function Ball() {
   this.color = "greentyellow";
@@ -26,7 +27,7 @@ Ball.prototype.draw = function() {
 var ball = new Ball();
 ball.draw();
 
-//to draw paddle(rectangle)
+//To draw paddle(rectangle)
 function Paddle(color, x, y, score) {
   this.color = color;
   this.x = x;
@@ -37,7 +38,7 @@ function Paddle(color, x, y, score) {
   this.score2 = 0;
 }
 
-//score
+//SCORE
 var score1 = 0;
 var score2 = 0;
 
@@ -49,29 +50,25 @@ Paddle.prototype.draw = function() {
 
 //creation of Player1-Player2
 var player1 = new Paddle("greenyellow", 10, canvas.height / 2, score1); // params are color, x pos, y pos for each new Paddle
-player1.draw();
-var player2 = new Paddle("greenyellow", 750, canvas.height / 2, score2);
-player2.draw();
+var player2 = new Paddle("greenyellow", 755, canvas.height / 2, score2);
 
 function keyDownHandler(e) {
   //console.log(e);
   //ctx.clearRect(this.x, this.y, this.w, this.h);
   if (e.key === "s") {
     // console.log("uppppp");
-    // console.log(player1.y);
-    player1.y -= 30; // speed of the paddle
+    player1.y -= 50; // speed of the paddle
   } else if (e.key === "z") {
-    player1.y += 30;
+    player1.y += 50;
   } else if (e.key === "ArrowUp") {
-    player2.y -= 30;
+    player2.y -= 50;
   } else if (e.key === "ArrowDown") {
-    player2.y += 30;
+    player2.y += 50;
   }
 }
 
-///////draw functions
+////---------------------DRAW FUNCTIONS------------------
 
-var isActive = true;
 function draw() {
   ctx.clearRect(0, 0, 800, 600);
 
@@ -95,50 +92,105 @@ function draw() {
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  //???????????
-  // if (ball.y + ball.r > canvas.height || ball.y < 0) {
-  //   ball.vx *= -1;
-  // }
+  //???????????ball movements
+  if (ball.y + ball.ballRadius > canvas.height || ball.y < 0) {
+    // console.log("here we go again");
 
-  if (ball.x - ball.r < player1.x + player1.w || ball.x + ball.r > player2.x) {
+    ball.dx *= 1;
+  }
+
+  if (
+    ball.x - ball.ballRadius < player1.x + player1.w ||
+    ball.x + ball.ballRadius > player2.x
+  ) {
+    // console.log("here we go again");
   }
 
   // ------------------- PLAYER ONE -------------------
+
   //when player1 hits ball
-  // if (ball.x - ball.r < player1.x + player1.w) {
+  if (ball.x - ball.ballRadius < player1.x + player1.w) {
+    // console.log("It works??");
+    isActive = true;
+  }
+
+  //   ball.y + ball.dy > canvas.height - ball.ballRadius ||
+  //   ball.y + ball.dy < ball.ballRadius
+  // ) {
+  //   ball.dy = -ball.dy;
   // }
   //horizantally hits
 
-  if (ball.y + ball.r > player1.y && ball.y < player1.y + player1.h) {
-    console.log(score1);
-    score1++;
-  }
-  // player1--bouncing the ball on x axes
-  if (ball.x - ball.r < player1.y + player1.w) {
-    console.log("whar does this do?");
-  }
-
-  /// ------------ PLAYER TWO -------------
-  //when palyer2 hits ball
-  // if (ball.x + ball.r > player2.x) {
+  // if (ball.y + ball.ballRadius > player1.y && ball.y < player1.y + player1.h) {
+  //   // console.log(score1);
+  //   score1++;
+  // }
+  // // player1--bouncing the ball on x axes
+  // if (ball.x - ball.ballRadius < player1.y + player1.w) {
+  //   // console.log("what does this do?");
   // }
 
-  if (ball.y + ball.r > player2.y && ball.y < player2.y + player2.h) {
+  if (
+    ball.x < player1.x + player1.w &&
+    ball.x + ball.dx > player1.x &&
+    ball.y < player1.y + player1.h &&
+    ball.y + ball.dy > player1.y
+  ) {
+    ball.dx = -ball.dx;
+    isActive = true;
+    score1++;
+  }
+
+  /// it restarts the ball's action....
+  // if (
+  //   ball.x + ball.dx > player1.witdh - ball.ballRadius ||
+  //   ball.x + ball.dx < ball.ballRadius
+  // ) {
+  //   // console.log("new ball is cominnnngg");
+  //   ball.dx = -ball.dx;
+  //   isActive = true;
+  // }
+
+  /// ------------ PLAYER TWO -------------
+  //when palyer2 hits the  ball
+  if (ball.x + ball.ballRadius > player2.x) {
+    // console.log("WHYYYY NOT WORKING?!??!AND WHAT IS THIS??");
+  }
+
+  if (ball.x + ball.ballRadius > player2.x && ball.x < player2.x + player2.h) {
     score2++;
   }
-  //  ball.vx *= -1;
+  ball.dx *= 1;
+
+  if (
+    ball.x < player2.x + player2.w &&
+    ball.x + ball.dx > player2.x &&
+    ball.y < player2.y + player2.h &&
+    ball.y + ball.dy > player2.y
+  ) {
+    ball.dx = -ball.dx;
+    isActive = true;
+    score2++;
+  }
+
+  //ball.dx = ball.dx * 1;
 
   // player2--bouncing the ball on x axes
-  if (ball.x + ball.r > player2.x) {
-    console.log("whar does this do?");
-  }
+  // if (
+  //   ball.x + ball.dx > player2.width - ball.ballRadius ||
+  //   ball.x + ball.dx < ball.ballRadius
+  // ) {
+  //   ball.dx = -ball.dx;
+  //   isActive = true;
+  // }
+
   // --------------- BOUNCING OFF EDGES ----------
   //when it hits the left and right
   if (
     ball.x + ball.dx > canvas.width - ball.ballRadius ||
     ball.x + ball.dx < ball.ballRadius
   ) {
-    console.log("wwwww");
+    // console.log("passing the X axes");
 
     //return;
     ball.dx = -ball.dx;
