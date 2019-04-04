@@ -120,12 +120,15 @@ Paddle.prototype.hitP2 = function() {
   return false;
 };
 
+var playerOneScore = player1.score;
+var playerTwoScore = player2.score;
+
 function displayScore() {
   ctx.fillText(
     "   P1: " +
-      player1.score +
+      playerOneScore +
       "                                                P2: " +
-      player2.score,
+      playerTwoScore,
     0,
     20
   );
@@ -183,9 +186,13 @@ function draw(now) {
   if (ball.checkBorderExit()) {
     //if ball exits from left right axes reset the ball
     const winner = ball.x < 0 ? "player2" : "player1";
-    console.log("someone wıns", winner);
-    // console.log();
-
+    console.log("someone wins", winner);
+    winner.score++;
+    if (winner === "player1") {
+      playerOneScore++;
+    } else if (winner === "player2") {
+      playerTwoScore++;
+    }
     ball.reset();
   }
 
