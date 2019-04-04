@@ -1,5 +1,11 @@
 intervalId = null;
 var canvas = document.getElementById("canvas");
+var startBtn = document.getElementById("startbutton");
+startBtn.onclick = function() {
+  draw();
+  startBtn.style.display = "none";
+};
+// draw yazardın eğer function içine koymasaydın: draw dont put the paranthesis because you call immediatly
 
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
@@ -7,18 +13,16 @@ canvas.height = canvas.scrollHeight;
 var ctx = canvas.getContext("2d");
 ctx.font = "20px Monospace";
 
-startBtn = {};
-
 function Ball() {
   this.isActive = true;
   this.color = "greentyellow";
   this.x = canvas.width / 2;
   this.y = canvas.height / 2;
   this.ballRadius = 10;
-  this.dy = 4; //horizantal direction
-  this.dx = 4; //vertical direction
-  this.x_speed = 6;
-  this.y_speed = 6;
+  this.dy = 8; //horizantal direction
+  this.dx = 8; //vertical direction
+  this.x_speed = 15;
+  this.y_speed = 15;
 }
 
 Ball.prototype.draw = function() {
@@ -57,12 +61,12 @@ Ball.prototype.checkBorderRebounce = function() {
 //right and left getting out off
 Ball.prototype.checkBorderExit = function() {
   if (ball.x > canvas.width + 2 * ball.ballRadius) {
-    console.log("riıght sıde");
+    // console.log("riıght sıde");
 
     return true;
   }
   if (ball.x < -2 * ball.ballRadius) {
-    console.log("left sıde");
+    // console.log("left side");
     return true;
   }
   return false;
@@ -147,26 +151,6 @@ function keyDownHandler(e) {
   }
 }
 
-// Start Button object
-startBtn = {
-  w: 100,
-  h: 50,
-  x: canvas.width / 2 - 50,
-  y: canvas.height / 2 - 25
-};
-
-startBtn.draw = function() {
-  ctx.strokeStyle = "greenyellow";
-  ctx.lineWidth = "10";
-  ctx.strokeRect(this.x, this.y, this.w, this.h);
-
-  ctx.font = "18px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStlye = "Green";
-  ctx.fillText("Start", canvas.width / 2, canvas.height / 2);
-};
-
 //                          ---------------------DRAW FUNCTIONS------------------
 
 function draw(now) {
@@ -175,7 +159,6 @@ function draw(now) {
   player1.draw();
   player2.draw();
   ball.draw();
-  // startBtn.draw();
   player1.hitP1();
   player2.hitP2();
 
@@ -186,7 +169,7 @@ function draw(now) {
   if (ball.checkBorderExit()) {
     //if ball exits from left right axes reset the ball
     const winner = ball.x < 0 ? "player2" : "player1";
-    console.log("someone wins", winner);
+    // console.log("someone wins", winner);
     winner.score++;
     if (winner === "player1") {
       playerOneScore++;
@@ -200,60 +183,6 @@ function draw(now) {
   window.requestAnimationFrame(draw);
 }
 
-//pLAYER 1
-// if (
-//   ball.y > canvas.height + ball.ballRadius ||
-//   ball.y < canvas.height + ball.ballRadius
-// ) {
-// }
-// if (ball.x - ball.ballRadius < player1.x + player1.w) {
-//   console.log("It works??");
-//   isActive = false;
-// }
-// if (
-//   ball.x < player1.x + player1.w &&
-//   ball.x + ball.dx > player1.x &&
-//   ball.y < player1.y + player1.h &&
-//   ball.y + ball.dy > player1.y
-// ) {
-//   ball.dx = -ball.dx;
-//   // isActive = true;
-// }
-// /// ------------ PLAYER TWO -------------
-
-// if (
-//   ball.x < player2.x + player2.w &&
-//   ball.x + ball.dx > player2.x &&
-//   ball.y < player2.y + player2.h &&
-//   ball.y + ball.dy > player2.y
-// ) {
-//   ball.dx = -ball.dx;
-//   score2++;
-// }
-
-// // ----------------------------------- BOUNCING OFF EDGES ----------------------------------
-
-// //-----------When it hits the left and right
-
-// if (ball.x + ball.dx > canvas.width - ball.ballRadius) {
-//   // console.log("passing the X axes");
-
-//   ball.dx = -ball.dx;
-//   isActive = false;
-// } else if (ball.x < 0) {
-//   ball.dx = +ball.dx;
-//   isActive = false;
-// }
-// ///------------------When it hits the bottom and top---------------
-// else if (
-//   ball.y + ball.dy > canvas.height - ball.ballRadius ||
-//   ball.y + ball.dy < ball.ballRadius
-// ) {
-//   ball.dy = -ball.dy;
-// }
-
 document.onkeydown = keyDownHandler; //action when the key is pressed
 
-// setInterval(draw, 10);
-
-intervalId = window.requestAnimationFrame(draw);
+// intervalId = window.requestAnimationFrame(draw);
