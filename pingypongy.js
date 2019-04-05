@@ -1,8 +1,8 @@
 intervalId = null;
 var canvas = document.getElementById("canvas");
 var startBtn = document.getElementById("startbutton");
-var sound = new Audio("pong1.wav");
-
+var sound = new Audio("pong3.wav");
+var sound2 = new Audio("clap.wav");
 var ball, player1, player2;
 
 startBtn.onclick = function() {
@@ -153,8 +153,10 @@ function setScore(winner) {
   if (reset === false) {
     if (winner === "player1") {
       player1.score++;
+      sound2.play();
     } else if (winner === "player2") {
       player2.score++;
+      sound2.play();
     }
     ball.reset();
   }
