@@ -5,6 +5,8 @@ var sound = new Audio("pong3.wav");
 var sound2 = new Audio("clap.wav");
 var ball, player1, player2;
 
+whosTurn = "p1";
+
 startBtn.onclick = function() {
   startBtn.style.display = "none";
   ball = new Ball();
@@ -12,8 +14,23 @@ startBtn.onclick = function() {
   player1 = new Paddle("greenyellow", 10, canvas.height / 2, 0); // params are color, x pos, y pos for each new Paddle
   player2 = new Paddle("greenyellow", 755, canvas.height / 2, 0);
   intervalId = window.requestAnimationFrame(draw);
-};
-// draw yazardın eğer function içine koymasaydın: draw dont put the paranthesis because you call immediatly
+}; // draw yazardın eğer function içine koymasaydın: draw dont put the paranthesis because you call immediatly
+
+//Changing colors of the background
+function generateRandomColor() {
+  const possibleColors = ["r#EDFAC9  ", "#EDFAC9",  pink", "red"];
+  console.log(Math.floor(Math.random() * possibleColors.length));
+  const rand = Math.floor(Math.random() * possibleColors.length);
+  return possibleColors[rand];
+}
+
+
+
+// Changes the color of the background using STYLE
+function changeBackgroundColor() {
+  var colorBg = document.querySelector("body");
+  colorBg.style.backgroundColor = generateRandomColor();
+}
 
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
@@ -27,8 +44,8 @@ function Ball() {
   this.x = canvas.width / 2;
   this.y = canvas.height / 2;
   this.ballRadius = 8;
-  this.dy = 6; //horizantal direction
-  this.dx = 6; //vertical direction/speed
+  this.dy = whosTurn === "p2" ? -6 : 6; //horizantal direction
+  this.dx = whosTurn === "p2" ? -6 : 6; //vertical direction/speed
   this.x_speed = 10;
   this.y_speed = 10;
 }
@@ -64,7 +81,7 @@ Ball.prototype.checkBorderRebounce = function() {
 //right and left getting out off
 Ball.prototype.checkBorderExit = function() {
   if (ball.x > canvas.width + 2 * ball.ballRadius) {
-    // console.log("riıght sıde");
+    // console.log("right sıde");
 
     return true;
   }
@@ -153,12 +170,18 @@ function setScore(winner) {
   if (reset === false) {
     if (winner === "player1") {
       player1.score++;
+      whosTurn = "p1";
+
       sound2.play();
     } else if (winner === "player2") {
       player2.score++;
+      whosTurn = "p2";
+     
       sound2.play();
     }
     ball.reset();
+
+   
   }
 }
 
@@ -185,5 +208,6 @@ function draw(now) {
 }
 
 document.onkeydown = keyDownHandler; //action when the key is pressed
+setInterval(changeBackgroundColor, 1000);
 
 // intervalId = window.requestAnimationFrame(draw);
