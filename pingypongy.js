@@ -1,8 +1,8 @@
 intervalId = null;
 var canvas = document.getElementById("canvas");
 var startBtn = document.getElementById("startbutton");
-var sound = new Audio("pong3.wav");
-var sound2 = new Audio("clap.wav");
+var sound = new Audio("./pong3.wav");
+var sound2 = new Audio("./clap.wav");
 var ball, player1, player2;
 
 whosTurn = "p1";
