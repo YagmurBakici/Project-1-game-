@@ -136,18 +136,18 @@ function displayScore() {
 }
 
 function keyDownHandler(e) {
-  if (e.key === "s") {
-    player1.y -= 60; // speed of the paddle
-  } else if (e.key === "z") {
+  if (e.key === "s" || e.key === "S") {
+    player1.y -= 70; // speed of the paddle
+  } else if (e.key === "z" || e.key === "Z" || e.key === "w") {
     //key up
-    player1.y += 60;
+    player1.y += 70;
   } else if (e.key === "ArrowUp") {
-    player2.y -= 60;
+    player2.y -= 70;
   } else if (e.key === "ArrowDown") {
-    player2.y += 60;
+    player2.y += 70;
   }
 }
-
+//                                   ------------WINNER-------------
 function setScore(winner) {
   console.log(winner);
   if (reset === false) {
