@@ -18,13 +18,20 @@ startBtn.onclick = function() {
 
 //Changing colors of the background
 function generateRandomColor() {
-  const possibleColors = ["r#EDFAC9  ", "#EDFAC9",  pink", "red"];
+  const possibleColors = ["#E3CDFB", "#FAFADA", "#E6F9DE"];
   console.log(Math.floor(Math.random() * possibleColors.length));
   const rand = Math.floor(Math.random() * possibleColors.length);
   return possibleColors[rand];
 }
 
-
+// function color(list) {
+//   return "#" +
+//     (list += [blue, pink, orange, green][Math.floor(Math.random() * 16)]) &&
+//     list.length == 6
+//     ? list
+//     : color(list);
+// }
+// ("");
 
 // Changes the color of the background using STYLE
 function changeBackgroundColor() {
@@ -176,12 +183,18 @@ function setScore(winner) {
     } else if (winner === "player2") {
       player2.score++;
       whosTurn = "p2";
-     
+
       sound2.play();
     }
     ball.reset();
 
-   
+    if (winner === "player1") {
+      ball.dy = 7; //horizantal direction
+      ball.dx = 7; //vertical direction/speed
+    } else if (winner === "player2") {
+      ball.dy = -7; //horizantal direction
+      ball.dx = -7; //vertical direction/speed
+    }
   }
 }
 
