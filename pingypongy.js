@@ -6,7 +6,6 @@ var sound2 = new Audio("clap.wav");
 var ball, player1, player2;
 
 whosTurn = "p1";
-// TEST FOR PUSh
 
 startBtn.onclick = function() {
   startBtn.style.display = "none";
@@ -17,7 +16,7 @@ startBtn.onclick = function() {
   intervalId = window.requestAnimationFrame(draw);
 }; // draw yazardın eğer function içine koymasaydın: draw dont put the paranthesis because you call immediatly
 
-//Changing colors of the background
+//Changing colors of the background CHANGİNG
 function generateRandomColor() {
   const possibleColors = [
     "#FCEE21",
