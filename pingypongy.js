@@ -1,9 +1,17 @@
 intervalId = null;
 var canvas = document.getElementById("canvas");
 var startBtn = document.getElementById("startbutton");
+var sound = new Audio("pong1.wav");
+
+var ball, player1, player2;
+
 startBtn.onclick = function() {
-  draw();
   startBtn.style.display = "none";
+  ball = new Ball();
+  //creation of Player1-Player2
+  player1 = new Paddle("greenyellow", 10, canvas.height / 2, 0); // params are color, x pos, y pos for each new Paddle
+  player2 = new Paddle("greenyellow", 755, canvas.height / 2, 0);
+  intervalId = window.requestAnimationFrame(draw);
 };
 // draw yazardın eğer function içine koymasaydın: draw dont put the paranthesis because you call immediatly
 
@@ -14,15 +22,15 @@ var ctx = canvas.getContext("2d");
 ctx.font = "20px Monospace";
 
 function Ball() {
-  this.isActive = true;
+  reset = false;
   this.color = "greentyellow";
   this.x = canvas.width / 2;
   this.y = canvas.height / 2;
-  this.ballRadius = 10;
-  this.dy = 8; //horizantal direction
-  this.dx = 8; //vertical direction
-  this.x_speed = 15;
-  this.y_speed = 15;
+  this.ballRadius = 8;
+  this.dy = 6; //horizantal direction
+  this.dx = 6; //vertical direction/speed
+  this.x_speed = 10;
+  this.y_speed = 10;
 }
 
 Ball.prototype.draw = function() {
@@ -32,20 +40,15 @@ Ball.prototype.draw = function() {
   ctx.fill();
 };
 
-Ball.prototype.setActive = function() {
-  this.isActive = true;
-};
+var reset = false;
 
 Ball.prototype.reset = function() {
-  console.log("reset");
-  // ball = new Ball();
-  ball = new Ball();
-  // window.cancelAnimationFrame(intervalId);
-  setTimeout(function() {
-    // isActive = true;
-    // intervalId = window.requestAnimationFrame(draw);
-  }, 1000); // wait 1 second
-  //ball.draw();
+  reset = true;
+
+  setTimeout(() => {
+    console.log("reset");
+    ball = new Ball();
+  }, 1000);
 };
 
 //bottom and top bouncing
@@ -88,11 +91,6 @@ Paddle.prototype.draw = function() {
   ctx.fillRect(this.x, this.y, this.w, this.h);
 };
 
-var ball = new Ball();
-//creation of Player1-Player2
-var player1 = new Paddle("greenyellow", 10, canvas.height / 2, 0); // params are color, x pos, y pos for each new Paddle
-var player2 = new Paddle("greenyellow", 755, canvas.height / 2, 0);
-
 //                    ------------------- PLAYER ONE -------------------
 
 Paddle.prototype.hitP1 = function() {
@@ -103,6 +101,7 @@ Paddle.prototype.hitP1 = function() {
     ball.y + ball.dy > player1.y
   ) {
     ball.dx = -ball.dx; // hit the ball on the opposite way
+    sound.play();
     return true;
   }
   return false;
@@ -119,20 +118,18 @@ Paddle.prototype.hitP2 = function() {
     ball.y + ball.dy > player2.y
   ) {
     ball.dx = -ball.dx;
+    sound.play();
     return true;
   }
   return false;
 };
 
-var playerOneScore = player1.score;
-var playerTwoScore = player2.score;
-
 function displayScore() {
   ctx.fillText(
     "   P1: " +
-      playerOneScore +
+      player1.score +
       "                                                P2: " +
-      playerTwoScore,
+      player2.score,
     0,
     20
   );
@@ -151,6 +148,18 @@ function keyDownHandler(e) {
   }
 }
 
+function setScore(winner) {
+  console.log(winner);
+  if (reset === false) {
+    if (winner === "player1") {
+      player1.score++;
+    } else if (winner === "player2") {
+      player2.score++;
+    }
+    ball.reset();
+  }
+}
+
 //                          ---------------------DRAW FUNCTIONS------------------
 
 function draw(now) {
@@ -165,20 +174,10 @@ function draw(now) {
   ball.x += ball.dx;
   ball.y += ball.dy;
   // }
-
   if (ball.checkBorderExit()) {
     //if ball exits from left right axes reset the ball
-    const winner = ball.x < 0 ? "player2" : "player1";
-    // console.log("someone wins", winner);
-    winner.score++;
-    if (winner === "player1") {
-      playerOneScore++;
-    } else if (winner === "player2") {
-      playerTwoScore++;
-    }
-    ball.reset();
+    setScore(ball.x < 0 ? "player2" : "player1");
   }
-
   ball.checkBorderRebounce();
   window.requestAnimationFrame(draw);
 }
