@@ -6,6 +6,7 @@ var sound2 = new Audio("clap.wav");
 var ball, player1, player2;
 
 whosTurn = "p1";
+// TEST FOR PUSh
 
 startBtn.onclick = function() {
   startBtn.style.display = "none";
