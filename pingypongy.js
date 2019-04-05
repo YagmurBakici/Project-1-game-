@@ -18,7 +18,13 @@ startBtn.onclick = function() {
 
 //Changing colors of the background
 function generateRandomColor() {
-  const possibleColors = ["#E3CDFB", "#FAFADA", "#E6F9DE"];
+  const possibleColors = [
+    "#FCEE21",
+    "#FFFFC1",
+    "#FFFF75",
+    "#FCEE21",
+    "#FCCB21"
+  ];
   console.log(Math.floor(Math.random() * possibleColors.length));
   const rand = Math.floor(Math.random() * possibleColors.length);
   return possibleColors[rand];
